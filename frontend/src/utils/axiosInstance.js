@@ -1,7 +1,7 @@
 import axios from "axios";
 const axiosInstance = axios.create({
   // baseURL: "http://localhost:8080",
-  baseURL: "vector-jobs-api.vercel.app",
+  baseURL: "https://vector-jobs-api.vercel.app/",
   timeout: 10000,
   headers: {
     "Content-Type": "application/json",
