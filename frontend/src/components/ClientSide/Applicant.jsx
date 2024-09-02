@@ -9,31 +9,43 @@ export default function Applicant({ toggleApplicant, Data }) {
   const [error, setError] = useState(null);
   const [hiredApplicantId, setHiredApplicantId] = useState(null); // Track hired applicant ID
   const [showRatingForm,setShowRatingForm] = useState(false)
+  const fetchApplicants = async () => {
+    try {
+      const response = await axiosInstance.get(`/job/jobs/${Data._id}`);
+      const applicantsData = response.data.applicants;
+      setApplicants(applicantsData);
+      setLoading(false);
+    } catch (error) {
+      console.error('Error fetching applicants:', error);
+      setError('Failed to fetch applicants.');
+      setLoading(false);
+    }
+  };
   useEffect(() => {
-    const fetchApplicants = async () => {
-      try {
-        const response = await axiosInstance.get(`/job/jobs/${Data._id}`);
-        const applicantsData = response.data.applicants;
-        setApplicants(applicantsData);
-        setLoading(false);
-      } catch (error) {
-        console.error('Error fetching applicants:', error);
-        setError('Failed to fetch applicants.');
-        setLoading(false);
-      }
-    };
-
     fetchApplicants();
   }, [Data._Id]);
+
+  const updateChatClient = async ()=>{
+    try{
+      const response = await axiosInstance.post('/freelancer/updateChatClients');
+      alert(response.data.msg);
+      console.log(response);
+    }catch(error){
+      console.error("Error updating chat clients", error);
+      alert('Failed to update chat clients');
+    }
+  };
 
   const handleHireApplicant = async (applicantId) => {
     try {
       const response = await axiosInstance.patch(`/job/hire/${Data._id}`, {
         applicantId,
       });
-
       if (response.status === 200) {
-        setHiredApplicantId(applicantId); // Set the hired applicant ID
+        setHiredApplicantId(applicantId);
+        updateChatFreelancer();
+        updateChatClient();
+        fetchApplicants() // Set the hired applicant ID
       }
     } catch (error) {
       console.error("Error hiring applicant:", error);
@@ -84,7 +96,7 @@ export default function Applicant({ toggleApplicant, Data }) {
               <tr key={applicant._id} className="border-b border-gray-300 hover:bg-gray-50">
                 <td className="px-6 py-4 text-gray-800">{index + 1}</td>
                 <td className="px-6 py-4 text-gray-800">{applicant.username}</td>
-                <td className="px-6 py-4 text-gray-600">{applicant.speciality}</td>
+                <td className="px-6 py-4 text-gray-600">{applicant.skills}</td>
                 <td className="px-6 py-4 text-gray-800">{applicant.bid}</td>
                 <td className="px-6 py-4 flex items-center space-x-2">
                   <button 

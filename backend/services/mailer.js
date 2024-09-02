@@ -1,26 +1,22 @@
 const nodemailer = require('nodemailer');
-require('dotenv').config();
-    
-
-// Create a transporter object using your email service provider
 const transporter = nodemailer.createTransport({
-  service: 'gmail', // Use the email service you prefer
-  auth: {
-    user: process.env.EMAIL_USER, // Your email address
-    pass: process.env.EMAIL_PASS  // Your email password
-  }
-});
-
-// Function to send email
-const sendEmail = (to, subject, text) => {
-  const mailOptions = {
-    from: process.env.EMAIL_USER,
-    to,
-    subject,
-    text
+    service: 'gmail',
+    auth: {
+      user: 'vectorjobsbusiness@gmail.com',  // Your email address
+      pass: 'cscj tqxm mtiz pgnx',  // Your app password
+    },
+  });
+  
+  // Function to send an email
+  const sendEmail = (to, subject, text) => {
+    const mailOptions = {
+      from: '"Vector Jobs" <vectorjobsbusiness@gmail.com>', // Sender address
+      to,
+      subject,
+      text,
+    };
+  
+    return transporter.sendMail(mailOptions);
   };
-
-  return transporter.sendMail(mailOptions);
-};
-
-module.exports = sendEmail;
+  
+  module.exports = sendEmail;

@@ -8,6 +8,7 @@ import ProfileClient from "./tmp/ProfileClient";
 import FreelancerPage from './components/FreelancerSide/FreelancerPage';
 import FreelancerForm from './components/FreelancerSide/FreelancerForm';
 import LeaderBoard from './components/FreelancerSide/LeaderBoard';
+import ClientChat from './components/ClientSide/ClientChat';
 
 const routes = (
   <Router>
@@ -17,7 +18,8 @@ const routes = (
     <Route path="/profile" exact element={<ProfileFreelancer />} />
     <Route path="/profileClient" exact element={<ProfileClient />} />
     <Route path="/freelancer" exact element={<FreelancerPage />} />
-    <Route path="/tmp" exact element={<LeaderBoard />} />
+    <Route path="/client/leaderboard" exact element={<LeaderBoard />} />
+    <Route path="/Chat" exact element={<ClientChat/>}/>
     </Routes>
   </Router>
 )

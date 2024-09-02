@@ -2,54 +2,64 @@ import React, { useState } from "react";
 import Client from "../../assets/Client.jpg";
 import Message from "./Message";
 import axiosInstance from "../../utils/axiosInstance";
-import { AiFillDelete } from 'react-icons/ai';
+import { AiFillDelete } from "react-icons/ai";
+import RatingForm from "../FreelancerSide/RatingForm";
+
 export default function DisplayDataForm({
   data,
   showPage,
   D_M_Y,
   DisplayTable,
   getJobs,
-  DeleteData
+  DeleteData,
 }) {
   const [isEditing, setIsEditing] = useState(false);
   const [editedData, setEditedData] = useState(data);
   const [showMessage, setShowMessage] = useState(false);
-  
+
+
+  const [showRForm, setShowRform] = useState(false);
+
   const handleEditClick = () => {
     setIsEditing(true);
   };
-  
-  async function handleSaveClick(){
-    await axiosInstance.put(`/job/edit/${data._id}`,{editedData}).then((res)=>{
-      console.log(res);
-    })
+
+  async function handleSaveClick() {
+    await axiosInstance
+      .put(`/job/edit/${data._id}`, { editedData })
+      .then((res) => {
+        console.log(res);
+      });
     getJobs();
     console.log("Data saved:", editedData);
     setIsEditing(false);
-  };
-
+  }
 
   const handleChange = (e) => {
     setEditedData({ ...editedData, jobDescription: e.target.value });
   };
 
-  async function DeleteData(){
+  async function DeleteData() {
     const userInput = prompt("Sure want to delete the job? yes/no?");
-    if(userInput==='yes' || 'Yes'){
-    try {
-      const response = await axiosInstance.delete(`/job/delete/${data._id}`);
-      getJobs();
-      alert("User Deleted successfully");
-      console.log(response.data.message); // Handle success, display the message or perform other actions
-      // Update the UI or state to reflect the deletion if necessary
-  } catch (error) {
-      console.error('Error deleting job:', error.response ? error.response.data.message : error.message);
-      // Handle error, display an error message or perform other actions
-  }
-}
+    if (userInput === "yes" || userInput === "Yes") {
+      try {
+        const response = await axiosInstance.delete(`/job/delete/${data._id}`);
+        getJobs();
+        alert("User Deleted successfully");
+        console.log(response.data.message); 
+      } catch (error) {
+        console.error(
+          "Error deleting job:",
+          error.response ? error.response.data.message : error.message
+        );
+      }
+    }
   }
 
-
+  const ShowRating = () => {
+    setShowRform(true);
+    // showPage(); // Close DisplayDataForm after showing RatingForm
+  };
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-40 backdrop-blur-sm z-50">
@@ -68,6 +78,9 @@ export default function DisplayDataForm({
           aria-label="Delete"
         >
           <AiFillDelete />
+        </button>
+        <button onClick={ShowRating} className="bg-red-600 text-white px-3 py-1 ml-14 mt-4  rounded-lg shadow-md hover:bg-red-700 transition-transform transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-red-600">
+          End Job
         </button>
         <div className="flex mt-8">
           <div className="w-1/2">
@@ -120,63 +133,38 @@ export default function DisplayDataForm({
                 onChange={handleChange}
                 readOnly={!isEditing}
               />
-              {/* <div className="text-right text-gray-500 text-sm mt-1">
-                {editedData.jobDescription} / 500
-              </div> */}
             </div>
-            
-              <div className="flex justify-end gap-4 relative">
-                {isEditing ? (
-                  <button
-                    onMouseEnter={() => setShowMessage(false)}
-                    onMouseLeave={() => setShowMessage(false)}
-                    onClick={handleSaveClick}
-                    className="bg-gray-600 text-white px-6 py-2 rounded-full shadow-md hover:bg-gray-700 transition-transform transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-gray-600 flex items-center gap-2 border-gray-500"
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      strokeWidth="2"
-                      stroke="currentColor"
-                      className="w-6 h-6"
+            <div className="flex justify-end gap-4 relative">
+              {isEditing ? (
+                <button
+                  onMouseEnter={() => setShowMessage(false)}
+                  onMouseLeave={() => setShowMessage(false)}
+                  onClick={handleSaveClick}
+                  className="bg-gray-600 text-white px-6 py-2 rounded-full shadow-md hover:bg-gray-700 transition-transform transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-gray-600 flex items-center gap-2 border-gray-500"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth="2"
+                    stroke="currentColor"
+                    className="w-6 h-6"
                     >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M5 13l4 4L19 7"
-                      />
-                    </svg>
-                    Save
-                  </button>
-                ) : (
-                  <button
-                    onMouseEnter={() => setShowMessage(true)}
-                    onMouseLeave={() => setShowMessage(false)}
-                    onClick={handleEditClick}
-                    className="bg-blue-600 text-white px-6 py-2 rounded-full shadow-md hover:bg-blue-700 transition-transform transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-600 flex items-center gap-2"
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      strokeWidth="2"
-                      stroke="currentColor"
-                      className="w-6 h-6"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M15.232 5.232l3.536 3.536m-2.036-4.036a2.5 2.5 0 113.536 3.536L6.75 19.75H3.5v-3.25L16.732 4.732z"
-                      />
-                    </svg>
-                    Edit
-                  </button>
-                )}
-                <button  onClick={()=>{
-                 showPage();
-                 DisplayTable();
-                }} className="absolute bg-gray-600 left-0 text-white px-6 py-2 rounded-full shadow-md hover:bg-gray-700 transition-transform transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-gray-600 flex items-center gap-2 border-gray-500">
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M5 13l4 4L19 7"
+                    />
+                  </svg>
+                  Save
+                </button>
+              ) : (
+                <button
+                  onMouseEnter={() => setShowMessage(true)}
+                  onMouseLeave={() => setShowMessage(false)}
+                  onClick={handleEditClick}
+                  className="bg-blue-600 text-white px-6 py-2 rounded-full shadow-md hover:bg-blue-700 transition-transform transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-600 flex items-center gap-2"
+                >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
@@ -188,28 +176,55 @@ export default function DisplayDataForm({
                     <path
                       strokeLinecap="round"
                       strokeLinejoin="round"
-                      d="M5 13l4 4L19 7"
+                      d="M15.232 5.232l3.536 3.536m-2.036-4.036a2.5 2.5 0 113.536 3.536L6.75 19.75H3.5v-3.25L16.732 4.732z"
                     />
                   </svg>
-                  Applicants
+                  Edit
                 </button>
-                {/* <button className="border border-black">del</button> */}
-                {showMessage && (
-                  <div className="absolute bottom-full mb-2 left-4/5 transform -translate-x-1/2">
-                    <Message />
-                  </div>
-                )}
-              </div>
-            
-           
+              )}
+              <button
+                onClick={() => {
+                  showPage();
+                  DisplayTable();
+                }}
+                className="absolute bg-gray-600 left-0 text-white px-6 py-2 rounded-full shadow-md hover:bg-gray-700 transition-transform transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-gray-600 flex items-center gap-2 border-gray-500"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth="2"
+                  stroke="currentColor"
+                  className="w-6 h-6"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M5 13l4 4L19 7"
+                    />
+                </svg>
+                Applicants
+              </button>
+              {showMessage && (
+                <div className="absolute bottom-full mb-2 left-4/5 transform -translate-x-1/2">
+                  <Message />
+                </div>
+              )}
+            </div>
           </div>
         </div>
-        {/* <div className="absolute bottom-0 right-0 p-1 text-[10px]">
-          Created : <span className="text-[10px]">{D_M_Y}</span>
-        </div> */}
-        
       </div>
-    
+      {/* RatingForm component */}
+      {showRForm && (
+        <div className="fixed inset-0 flex items-center justify-center z-50">
+          <RatingForm
+            jobId={data._id}
+            jobTitle={data.jobTitle}
+            jobSkills={data.tags}
+            close={showPage}
+          />
+        </div>
+      )}
     </div>
   );
 }

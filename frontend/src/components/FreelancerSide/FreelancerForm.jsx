@@ -38,6 +38,7 @@ export default function FreelancerForm({ VisibleForm ,data, setShowFreelancerFor
       setFormData({
         bid: "",
         note: "",
+        skills: ""
       });
     } catch (error) {
       console.error(error);

@@ -8,6 +8,13 @@ const jwt = require("jsonwebtoken");
 const { authenticateToken } = require("../utilities");
 const jobs = require("../models/jobs");
 
+
+const EventEmitter = require('events');
+const userEvents = new EventEmitter();
+userEvents.setMaxListeners(20); // Increase the limit to 20
+
+
+
 //Client new user register route
 router.post("/signup", async (req, res) => {
   try {
@@ -102,6 +109,7 @@ router.get("/getUser", authenticateToken, async (req, res) => {
       _id: isUser._id,
       fullname: isUser.fullname,
       description: isUser.description,
+      chatFreelancer: isUser.chatFreelancer
     },
     message: "",
   });

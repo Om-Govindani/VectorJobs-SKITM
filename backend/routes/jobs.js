@@ -12,6 +12,20 @@ const jobs = require("../models/jobs");
 router.use(express.json());
 const sendEmail = require('../services/mailer'); // Adjust path as necessary
 
+const EventEmitter = require('events');
+const jobEmitter = new EventEmitter();
+
+//const EventEmitter = require('events');
+//const jobEmitter = new EventEmitter();
+jobEmitter.setMaxListeners(20); // Increase the limit to 20
+
+
+
+//const EventEmitter = require('events');
+const userEvents = new EventEmitter();
+userEvents.setMaxListeners(20); // Increase the limit to 20
+
+
 
 router.get("/getJobs", authenticateToken, async (req, res) => {
   try {
@@ -110,10 +124,10 @@ router.post('/apply/:jobId', authenticateToken , async (req, res) => {
   //const user = req.user.user._id;
   //console.log(user);
     const jobId = req.params.jobId;
-    console.log(jobId);
+    console.log(req);
     const userId = req.user.user._id?.toString(); 
     const username = req.user.user.username;
-    const tags = req.user.user.tags;
+    const skills = req.user.user.skills;
     const { note, bid } = req.body; 
 
     const job = await jobs.findById(jobId);
@@ -126,7 +140,9 @@ router.post('/apply/:jobId', authenticateToken , async (req, res) => {
       return res.status(400).json({ msg: 'You have already applied for this job' });
     }
 
-    job.applicants.push({ _id: userId, note, bid,username,tags});
+    job.applicants.push({ _id: userId, note, bid,username,skills});
+    console.log("data");
+    console.log(job.applicants);
     await job.save();
 
     res.status(200).json({ msg: 'Applied successfully' });
@@ -180,8 +196,9 @@ router.delete('/delete/:id', async (req, res) => {
 router.patch("/hire/:id", async (req, res) => {
   try {
     const jobId = req.params.id;
+    //console.log(jobId)
     const  applicantId  = req.body.applicantId;
-    console.log(applicantId)
+    //console.log(applicantId)
     const job = await jobs.findById(jobId);
 
     if (!job) {
@@ -189,30 +206,34 @@ router.patch("/hire/:id", async (req, res) => {
     }
 
     const hiredApplicant = job.applicants.find(
-      (applicant) => applicant._id === applicantId
+      (applicant) => applicant._id.toString() === applicantId
     );
 
     if (!hiredApplicant) {
       return res.status(404).json({ message: "Applicant not found" });
     }
 
+    console.log(hiredApplicant)
+
     job.hired = true;
-//     console.log(`EMAIL_USER: ${process.env.EMAIL_USER}`);
-// console.log(`EMAIL_PASS: ${process.env.EMAIL_PASS}`);
+    
+    const Freelancer = await freelancer.findById(applicantId);
 
+    if (Freelancer) {
+      const emailSubject = `Congratulations, You Are Hired!`;
+      const emailText = `Dear ${Freelancer.username},\n\nCongratulations! You have been hired for the job titled '${job.jobTitle}'.\n\nBest regards,\nTeam VectorJobs`;
 
-//     const emailSubject = `Congratulations, You Are Hired!`;
-//     const emailText = `Dear ${freelancer.name},\n\nCongratulations! You have been hired for the job titled '${job.title}'.\n\nBest regards,\nTeam vectorjobs`;
-
-//     // Send email to freelancer
-//     await sendEmail(freelancer.email, emailSubject, emailText);
+      // Send the email to the freelancer
+      await sendEmail(Freelancer.email, emailSubject, emailText);
+    }
+     
 
     job.applicants = [hiredApplicant];
 
     await job.save();
 
     res.status(200).json({ message: "Applicant hired successfully", hiredApplicant });
-  } catch (error) {
+  }catch (error) {
     res.status(500).json({ message: "Error hiring applicant", error });
     console.log(error);
   }

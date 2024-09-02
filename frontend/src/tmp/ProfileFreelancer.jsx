@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import img from "./../assets/profile.jpg";
+import img from "./../assets/user.png";
 import Navbar from "../components/Navbar";
 import resume from "./../assets/Prateek's Resume.pdf";
 import "../styles/App.css";
@@ -30,7 +30,7 @@ const ProfileFreelancer = () => {
     description: "",
     email: "",
     skills: "",
-    resume: resume,
+    // resume: resume,
   });
 
   //const [showModal, setShowModal] = useState(false);
@@ -41,7 +41,7 @@ const ProfileFreelancer = () => {
     username : '',
     description: '',
     skills: '',
-    resume: resume,
+    // resume: resume,
   });
 
   // Function to fetch user information
@@ -61,9 +61,7 @@ const ProfileFreelancer = () => {
 
    // Use useEffect to call getUserInfo once when the component mounts
   useEffect(() => {
-    console.log("bhajiya")
     getUserInfo();
-    console.log(userInfo)
   }, []); // Empty dependency array ensures it runs only on mount
 
   // Update the profile state after userInfo is fetched
@@ -129,7 +127,6 @@ const ProfileFreelancer = () => {
       description: userInfo.description,
       skills : userInfo.skills
     })
-    console.log(response);
    }catch(err){
     console.log("Error: "+err);
    }
@@ -141,7 +138,7 @@ const ProfileFreelancer = () => {
     <>
       {/* <div className="bg-white  h-screen w-screen"> */}
       <div className=" w-screen flex flex-row ">
-      <Navbar userInfo={userInfo}/>
+      <Navbar />
         <div className="h-screen w-1/3 bg-[#071952] flex items-center justify-evenly">
           <div className="flex items-center justify-center flex-col mt-12">
             <img
@@ -151,7 +148,7 @@ const ProfileFreelancer = () => {
             />
             <div className="flex flex-col text-center justify-center gap-2 p-4 ">
               <h2 className="text-4xl font-bold text-white">
-              {userInfo ? userInfo.username : profile.name}
+              {profile.name}
               </h2>
               <p className="text-2xl text-white">{profile.description}</p>
             </div>
@@ -161,9 +158,9 @@ const ProfileFreelancer = () => {
         {/* <div className="flex flex-col"> */}
         {/* Div for table */}
         <div className="w-2/3 h-auto bg-white">
-          <div className="h-3/2 px-12 py-4  mt-16 flex flex-col justify-start bg-[#7E8EF1]">
+          <div className="h-3/2 px-12 py-4  mt-16 flex flex-col justify-start bg-white">
             <div className="flex justify-around items-center mb-8">
-              <h2 className="text-white text-3xl font-bold">
+              <h2 className="text-black text-3xl font-bold">
                 Freelancer Profile
               </h2>
               <button
@@ -194,32 +191,32 @@ active:border-b-[2px] active:brightness-90 active:translate-y-[2px]"
               </button> */}
             </div>
 
-            <div className="bg-white max-h-12 max-w-auto text-gray-800 p-4 rounded-lg shadow-lg shadow-gray-300 flex items-center transition-transform duration-300 ease-in-out hover:bg-gradient-to-r hover:from-blue-100 hover:to-blue-200 hover:border-blue-400 hover:border-2 border hover:scale-105 hover:shadow-2xl">
+            <div className="bg-white max-h-12 max-w-auto text-gray-800 p-4 rounded-lg shadow-lg shadow-gray-300 flex items-center transition-transform duration-300 ease-in-out hover:bg-gradient-to-r hover:from-blue-100 hover:to-blue-200 hover:border-blue-400 hover:border-2 border ">
               <CgProfile  className="w-6 h-6 text-blue-600 mr-4" />
               <div className="flex flex-grow flex-col">
                 <div className="flex items-center space-x-2">
                   <p className="font-semibold text-lg">Full Name :</p>
-                  <p className="text-md text-gray-700">{userInfo ? userInfo.fullname : profile.name}</p>
+                  <p className="text-md text-gray-700">{profile.name}</p>
                 </div>
               </div>
             </div>
             <div className="space-y-4 mx-2 my-2">
-              <div className="bg-white max-h-12 text-gray-800 p-4 rounded-lg shadow-lg shadow-gray-300 flex items-center transition-transform duration-300 ease-in-out hover:bg-gradient-to-r hover:from-blue-100 hover:to-blue-200 hover:border-blue-400 hover:border-2 hover:scale-105 hover:shadow-2xl">
+              <div className="bg-white max-h-12 text-gray-800 p-4 rounded-lg shadow-lg shadow-gray-300 flex items-center transition-transform duration-300 ease-in-out hover:bg-gradient-to-r hover:from-blue-100 hover:to-blue-200 hover:border-blue-400 hover:border-2 ">
                 <FaEnvelope className="w-6 h-6 text-blue-600 mr-4" />
                 <div className="flex flex-grow flex-col">
                   <div className="flex items-center space-x-2">
                     <p className="font-semibold text-lg">Email:</p>
-                    <p className="text-md text-gray-700">{userInfo ? userInfo.email : profile.email}</p>
+                    <p className="text-md text-gray-700">{profile.email}</p>
                   </div>
                 </div>
               </div>
 
-              <div className="bg-white max-h-12 text-gray-800 p-4 rounded-lg shadow-lg shadow-gray-300 flex items-center transition-transform duration-300 ease-in-out hover:bg-gradient-to-r hover:from-green-100 hover:to-green-200 hover:border-green-400 hover:border-2 hover:scale-105 hover:shadow-2xl">
+              <div className="bg-white max-h-12 text-gray-800 p-4 rounded-lg shadow-lg shadow-gray-300 flex items-center transition-transform duration-300 ease-in-out hover:bg-gradient-to-r hover:from-green-100 hover:to-green-200 hover:border-green-400 hover:border-2 ">
                 <FaBriefcase className="w-6 h-6 text-green-600 mr-4" />
                 <div className="flex flex-grow flex-col">
                   <div className="flex items-center space-x-2">
                     <p className="font-semibold text-lg">Skills:</p>
-                    <p className="text-md text-gray-700">{userInfo ? userInfo.skills : profile.skills}</p>
+                    <p className="text-md text-gray-700">{profile.skills}</p>
                   </div>
                 </div>
               </div>
@@ -241,141 +238,22 @@ active:border-b-[2px] active:brightness-90 active:translate-y-[2px]"
               </div>
           </div>
 
-          <div className="flex flex-col h-fit">
-            <table className="min-w-full divide-y divide-gray-200">
-              <thead className="bg-[rgba(66,63,193,.9)]">
-                <tr>
-                  <th className="w-1/3 px-6 py-3 text-center text-xs font-medium text-white uppercase tracking-wider">
-                    Job Title
-                  </th>
-                  <th className="w-1/3 px-6 py-3 text-center text-xs font-medium text-white uppercase tracking-wider">
-                    Client Name
-                  </th>
-                  <th className="w-1/3 px-6 py-3 text-center text-xs font-medium text-white uppercase tracking-wider">
-                    Job Status
-                  </th>
-                </tr>
-              </thead>
-            </table>
-            <div className="overflow-y-auto" style={{ maxHeight: "100px" }}>
+          
+            {/* <div className="overflow-y-auto" style={{ maxHeight: "100px" }}>
               {" "}
               {/* Set a maxHeight that works for your layout */}
-              <table className="min-w-full divide-y divide-gray-200">
-                <tbody className="bg-white divide-y divide-gray-200">
-                  <tr className="hover:bg-[#7E8EF1]">
-                    <td className="w-1/3 px-6 py-4 whitespace-nowrap text-center text-sm font-bold text-gray-900">
-                      Software Developer
-                    </td>
-                    <td className="w-1/3 px-6 py-4 whitespace-nowrap text-center text-sm text-gray-900 font-bold">
-                      Acme Corp
-                    </td>
-                    <td className="w-1/3 px-6 py-4 whitespace-nowrap text-center text-sm text-gray-900 font-bold">
-                      In Progress
-                    </td>
-                  </tr>
-                  <tr className="hover:bg-[#7E8EF1]">
-                    <td className="w-1/3 px-6 py-4 whitespace-nowrap text-center text-sm font-bold text-gray-900">
-                      Software Developer
-                    </td>
-                    <td className="w-1/3 px-6 py-4 whitespace-nowrap text-center text-sm text-gray-900 font-bold">
-                      Acme Corp
-                    </td>
-                    <td className="w-1/3 px-6 py-4 whitespace-nowrap text-center text-sm text-gray-900 font-bold">
-                      In Progress
-                    </td>
-                  </tr>
-                  <tr className="hover:bg-[#7E8EF1]">
-                    <td className="w-1/3 px-6 py-4 whitespace-nowrap text-center text-sm font-bold text-gray-900">
-                      Software Developer
-                    </td>
-                    <td className="w-1/3 px-6 py-4 whitespace-nowrap text-center text-sm text-gray-900 font-bold">
-                      Acme Corp
-                    </td>
-                    <td className="w-1/3 px-6 py-4 whitespace-nowrap text-center text-sm text-gray-900 font-bold">
-                      In Progress
-                    </td>
-                  </tr>
-                  <tr className="hover:bg-[#7E8EF1]">
-                    <td className="w-1/3 px-6 py-4 whitespace-nowrap text-center text-sm font-bold text-gray-900">
-                      Software Developer
-                    </td>
-                    <td className="w-1/3 px-6 py-4 whitespace-nowrap text-center text-sm text-gray-900 font-bold">
-                      Acme Corp
-                    </td>
-                    <td className="w-1/3 px-6 py-4 whitespace-nowrap text-center text-sm text-gray-900 font-bold">
-                      In Progress
-                    </td>
-                  </tr>
-                  <tr className="hover:bg-[#7E8EF1]">
-                    <td className="w-1/3 px-6 py-4 whitespace-nowrap text-center text-sm font-bold text-gray-900">
-                      Software Developer
-                    </td>
-                    <td className="w-1/3 px-6 py-4 whitespace-nowrap text-center text-sm text-gray-900 font-bold">
-                      Acme Corp
-                    </td>
-                    <td className="w-1/3 px-6 py-4 whitespace-nowrap text-center text-sm text-gray-900 font-bold">
-                      In Progress
-                    </td>
-                  </tr>
-                  <tr className="hover:bg-[#7E8EF1]">
-                    <td className="w-1/3 px-6 py-4 whitespace-nowrap text-center text-sm font-bold text-gray-900">
-                      Software Developer
-                    </td>
-                    <td className="w-1/3 px-6 py-4 whitespace-nowrap text-center text-sm text-gray-900 font-bold">
-                      Acme Corp
-                    </td>
-                    <td className="w-1/3 px-6 py-4 whitespace-nowrap text-center text-sm text-gray-900 font-bold">
-                      In Progress
-                    </td>
-                  </tr>
-                  <tr className="hover:bg-[#7E8EF1]">
-                    <td className="w-1/3 px-6 py-4 whitespace-nowrap text-center text-sm font-bold text-gray-900">
-                      Software Developer
-                    </td>
-                    <td className="w-1/3 px-6 py-4 whitespace-nowrap text-center text-sm text-gray-900 font-bold">
-                      Acme Corp
-                    </td>
-                    <td className="w-1/3 px-6 py-4 whitespace-nowrap text-center text-sm text-gray-900 font-bold">
-                      In Progress
-                    </td>
-                  </tr>
-                  <tr className="hover:bg-[#7E8EF1]">
-                    <td className="w-1/3 px-6 py-4 whitespace-nowrap text-center text-sm font-bold text-gray-900">
-                      Software Developer
-                    </td>
-                    <td className="w-1/3 px-6 py-4 whitespace-nowrap text-center text-sm text-gray-900 font-bold">
-                      Acme Corp
-                    </td>
-                    <td className="w-1/3 px-6 py-4 whitespace-nowrap text-center text-sm text-gray-900 font-bold">
-                      In Progress
-                    </td>
-                  </tr>
-                  <tr className="hover:bg-[#7E8EF1]">
-                    <td className="w-1/3 px-6 py-4 whitespace-nowrap text-center text-sm font-bold text-gray-900">
-                      Software Developer
-                    </td>
-                    <td className="w-1/3 px-6 py-4 whitespace-nowrap text-center text-sm text-gray-900 font-bold">
-                      Acme Corp
-                    </td>
-                    <td className="w-1/3 px-6 py-4 whitespace-nowrap text-center text-sm text-gray-900 font-bold">
-                      In Progress
-                    </td>
-                  </tr>
-                  {/* Add more rows as needed */}
-                </tbody>
-              </table>
+              
             </div>
           </div>
-        </div>
         {/* <div className=" w-auto  bg-gray-500 ">
             hello
           </div> */}
-      </div>
+      
 
       {/* Modal */}
       {isEditing && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-          <div className="bg-custom-gradient p-4 px-8 rounded-lg w-1/3 h-[95vh] max-h-[95vh] overflow-auto relative">
+          <div className="bg-white p-4 px-8 rounded-lg w-1/3 h-[95vh] max-h-[95vh] overflow-auto relative">
             <button
               className="absolute top-1 right-2 text-black text-3xl hover:text-gray-800 hover:scale-150  transition-transform duration-300"
               onClick={() => setIsEditing(false)}
@@ -396,7 +274,7 @@ active:border-b-[2px] active:brightness-90 active:translate-y-[2px]"
                 alt="Profile"
                 className="w-32 h-32 rounded-full mb-2"
               />
-              <div className="relative">
+              {/* <div className="relative">
                 <input
                   type="file"
                   name="photo"
@@ -411,7 +289,7 @@ active:border-b-[2px] active:brightness-90 active:translate-y-[2px]"
                 >
                   <FaImage className="mr-2" /> Upload Image
                 </label>
-              </div>
+              </div> */}
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-4">
@@ -479,7 +357,7 @@ active:border-b-[2px] active:brightness-90 active:translate-y-[2px]"
               </div>
 
               <div className="flex items-center justify-around">
-                <div className="relative text-center">
+                {/* <div className="relative text-center">
                   <input
                     type="file"
                     name="resume"
@@ -493,7 +371,7 @@ active:border-b-[2px] active:brightness-90 active:translate-y-[2px]"
                   >
                     <FaFileAlt className="mr-2" /> Upload Resume
                   </label>
-                </div>
+                </div> */}
                 <button
                   type="submit"
                   className="cursor-pointer transition-all bg-blue-500 text-white px-4 py-2 rounded-lg border-blue-600 border-b-[4px] 

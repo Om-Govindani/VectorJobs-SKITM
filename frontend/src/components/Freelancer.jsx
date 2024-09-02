@@ -81,7 +81,7 @@ function FreelancerReg() {
           localStorage.setItem("token", res.data.accessToken);
           
           // navigate("/freelancer")
-          navigate("/profile")
+          navigate("/freelancer")
           console.log(res.data)
           console.log("POST request send sucessfully");
         }else{

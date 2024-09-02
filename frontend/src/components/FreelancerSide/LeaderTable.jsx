@@ -1,16 +1,29 @@
 import React, { useState, useEffect } from "react";
 import RatingForm from "./RatingForm";
+//const sendEmail = require('../services/mailer'); // Adjust path as necessary
+// import sendEmail from "../../../../backEnd/services/mailer";
+
+
 
 const LeaderTable = ({ selectedFilter, selectedOption, onDropdownChange }) => {
   const [sortedData, setSortedData] = useState([]);
   const [button, setButton] = useState(false);
+  // async function onSubmit(){
+  //   const emailSubject = `Invitation to collaborate`;
+  //     const emailText = `Dear Om govindani \n\nI hope you are well my name is Adam polls and i represent zegotech.we are working on a project and believe your expertiece would be invaluable lets discuss the possibility of your envolvement in this project if you are interested please let us kniw looking forward for your response\n\nBest regards,\nAdam polls`;
+
+  //     // Send the email to the freelancer
+  //     await sendEmail("omgovindani@gmail.com", emailSubject, emailText).then((res)=>{
+  //       console.log(res);
+  //     })
+  // }
 
   // Sample data for the table with updated skills
   const tableData = [
     // Your data here
-    { id: 1, name: "John Doe", skills: "Frontend Developer", rating: 4.5, ranking: 3, completionRating: 4.2 },
-    { id: 2, name: "Jane Smith", skills: "Python Developer", rating: 4.7, ranking: 1, completionRating: 4.8 },
-    { id: 3, name: "Alice Johnson", skills: "Java Developer", rating: 4.6, ranking: 2, completionRating: 4.6 },
+    { id: 1, name: "Piyush Govindani", skills: "Frontend Developer", rating: 4.5, ranking: 3, completionRating: 4.2 },
+    { id: 2, name: "Jane Smith", skills: "Python Developer", rating: 4.7, ranking: 3, completionRating: 4.8 },
+    { id: 3, name: "Om Govindani", skills: "Java Developer", rating: 4.6, ranking: 2, completionRating: 4.6 },
     { id: 4, name: "Michael Brown", skills: "Backend Developer", rating: 4.4, ranking: 5, completionRating: 4.0 },
     { id: 5, name: "Emily Davis", skills: "Fullstack Developer", rating: 4.8, ranking: 4, completionRating: 4.7 },
     { id: 6, name: "David Wilson", skills: "App Developer", rating: 4.3, ranking: 7, completionRating: 4.1 },
@@ -99,11 +112,12 @@ const LeaderTable = ({ selectedFilter, selectedOption, onDropdownChange }) => {
                 <td className="px-6 py-4 border-b border-blue-100 text-sm">{item.skills}</td>
                 <td className="px-6 py-4 border-b border-blue-100 text-sm">{item.rating}</td>
                 <td className="px-6 py-4 border-b border-blue-100 text-center text-sm">
-                  <button
+                  <button 
+                    
                     onClick={() => alert(`Applied for user with ID: ${item.id}`)}
                     className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition"
                   >
-                    Apply
+                    Approach
                   </button>
                 </td>
               </tr>

@@ -25,7 +25,7 @@ function Collection_of_Form({ Data, getJobs, DateData , onDelete}) {
   }
 
   return (
-      <div class="relative w-[350px] h-[254px] mt-20 ml-[40px] rounded-2xl bg-gray-200 p-7 border-2 border-gray-300 transition ease-out duration-500 overflow-visible hover:border-[#928FE6] hover:shadow-2xl hover:shadow-indigo-600 group">
+      <div class="relative w-[350px] h-[254px] mt-8 ml-[40px] rounded-2xl bg-gray-200 p-7 border-2 border-gray-300 transition ease-out duration-500 overflow-visible hover:border-[#928FE6] hover:shadow-2xl hover:shadow-indigo-600 group">
         <div class="text-black h-full gap-2 flex flex-col">
           <p class="text-sm font-light flex justify-end">Posted On {moment(Data.createAt).format("Do MMM'YY")}</p>
           <p class="text-neutral-800 font-sans font-bold text-2xl mt-8">{Data.jobTitle.charAt(0).toUpperCase() + Data.jobTitle.slice(1)}</p>

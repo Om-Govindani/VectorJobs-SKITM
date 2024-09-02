@@ -1,13 +1,14 @@
-import React, { useState, useEffect } from 'react';
-import FormDiv from './FormDiv';
-import ClientForm from './ClientForm';
-import Collection_of_Form from './Collection-of-Form';
-import ErrorPage from '../ErrorPage';
-import Navbar from '../Navbar';
-import Footer from '../Footer';
+import React, { useState, useEffect } from "react";
+import FormDiv from "./FormDiv";
+import ClientForm from "./ClientForm";
+import Collection_of_Form from "./Collection-of-Form";
+import ErrorPage from "../ErrorPage";
+import Navbar from "../Navbar";
+import Footer from "../Footer";
 import axiosInstance from "../../utils/axiosInstance";
-import { useNavigate } from 'react-router-dom';
-import '../../styles/App.css';
+import { useNavigate } from "react-router-dom";
+import { FaTrophy } from "react-icons/fa"; // Import trophy icon
+import "../../styles/App.css";
 
 function ClientPage() {
   const [visible, setVisible] = useState(false);
@@ -18,7 +19,7 @@ function ClientPage() {
   const navigate = useNavigate();
 
   const handleFormSubmit = (data) => {
-    setFormData(data); 
+    setFormData(data);
   };
 
   const toggleFormVisibility = () => {
@@ -28,10 +29,10 @@ function ClientPage() {
   const DateChange = (dates) => {
     setDate(dates);
   };
+
   const handleDeleteCollection = () => {
-    setFormData(null); 
-    
-    console.log("whole data deleted!")
+    setFormData(null);
+    console.log("whole data deleted!");
   };
 
   const getUserInfo = async () => {
@@ -67,12 +68,27 @@ function ClientPage() {
   return (
     <div className="min-h-screen w-screen bg-white">
       <Navbar userInfo={userInfo} profile="/profileClient" />
+      <div className="flex items-end justify-end mr-8 mt-24">
+        <button
+          onClick={() => navigate("/client/leaderboard")}
+          className="flex items-center px-4 py-2 bg-blue-600 text-white rounded-full shadow-lg hover:bg-blue-700 transition duration-200"
+        >
+          <FaTrophy className="mr-2 text-xl" /> {/* Trophy icon */}
+          <span>Leaderboard</span>
+        </button>
+      </div>
 
       <div className="Jobs container mx-auto px-8 min-h-screen">
         {jobs.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {jobs.map((job) => (
-              <Collection_of_Form key={job._id} Data={job} getJobs={getJobs} DateData={date} onDelete={handleDeleteCollection}  />
+              <Collection_of_Form
+                key={job._id}
+                Data={job}
+                getJobs={getJobs}
+                DateData={date}
+                onDelete={handleDeleteCollection}
+              />
             ))}
           </div>
         ) : (

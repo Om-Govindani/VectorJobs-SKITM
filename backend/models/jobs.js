@@ -52,7 +52,7 @@ const jobSchema = new mongoose.Schema({
       username:{
         type:String
       },
-      tags:{
+      skills:{
         type:String
       },
     }

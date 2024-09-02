@@ -9,6 +9,11 @@ const jwt = require("jsonwebtoken");
 const { authenticateToken } = require("../utilities");
 const { userInfo } = require("os");
 //Freelancer new user register route
+
+const EventEmitter = require("events");
+const userEvents = new EventEmitter();
+userEvents.setMaxListeners(20); // Increase the limit to 20
+
 router.post("/signup", async (req, res) => {
   try {
     let { UserName, Email, password } = req.body.Freelancer;
@@ -87,6 +92,58 @@ router.post("/login", async (req, res) => {
     console.log(err);
   }
 });
+
+router.post("/getByIds", async (req, res) => {
+  try {
+    const { ids } = req.body;
+
+    // Find freelancers whose _id is in the provided ids array
+    const freelancers = await freelancer.find(
+      { _id: { $in: ids } },
+      "username"
+    );
+
+    if (!freelancers.length) {
+      return res
+        .status(404)
+        .json({ msg: "No freelancers found for the given IDs" });
+    }
+
+    res.status(200).json(freelancers);
+  } catch (error) {
+    console.error("Error fetching freelancers:", error);
+    res.status(500).json({ msg: "Server error" });
+  }
+});
+
+// router.post("/rate", async (req, res) => {
+//   try {
+//     const { applicantId, jobId, completionTimeRating, overallRating } =
+//       req.body;
+
+//     // Find the freelancer by applicantId
+//     const Freelancer = await freelancer.findById(applicantId);
+
+//     if (!Freelancer) {
+//       return res.status(404).json({ message: "Freelancer not found" });
+//     }
+
+//     // Add or update the rating
+//     Freelancer.ratings.push({
+//       jobId,
+//       completionTimeRating,
+//       overallRating,
+//     });
+
+//     // Save the updated freelancer document
+//     await Freelancer.save();
+
+//     res.status(200).json({ message: "Rating submitted successfully" });
+//   } catch (error) {
+//     console.error("Error submitting rating:", error);
+//     res.status(500).json({ message: "Server error", error });
+//   }
+// });
 
 router.get("/getUser", authenticateToken, async (req, res) => {
   const { user } = req.user;
@@ -171,18 +228,18 @@ router.post("/updateChatClients", authenticateToken, async (req, res) => {
   }
 });
 
-router.post('/rate', async (req, res) => {
+router.post("/rate", async (req, res) => {
   const { applicantId, jobId, completionTimeRating, overallRating } = req.body;
-
+  console.log(req);
   try {
     const freelancerDoc = await freelancer.findById(applicantId);
     if (!freelancerDoc) {
-      return res.status(404).json({ message: 'Freelancer not found' });
+      return res.status(404).json({ message: "Freelancer not found" });
     }
 
     const job = await jobs.findById(jobId);
     if (!job) {
-      return res.status(404).json({ message: 'Job not found' });
+      return res.status(404).json({ message: "Job not found" });
     }
 
     const totalRatings = freelancerDoc.totalRatings || 0;
@@ -199,10 +256,10 @@ router.post('/rate', async (req, res) => {
 
     await freelancerDoc.save();
 
-    res.status(200).json({ message: 'Rating updated successfully' });
+    res.status(200).json({ message: "Rating updated successfully" });
   } catch (error) {
-    console.error('Error updating rating:', error);
-    res.status(500).json({ message: 'Server error' });
+    console.error("Error updating rating:", error);
+    res.status(500).json({ message: "Server error" });
   }
 });
 

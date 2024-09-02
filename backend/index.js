@@ -10,6 +10,11 @@ const free = require('./routes/freelancer.js')
 const cli = require('./routes/client.js')
 const job = require('./routes/jobs.js')
 
+const EventEmitter = require('events');
+const appEventEmitter = new EventEmitter();
+appEventEmitter.setMaxListeners(20); // Increase the limit to 20
+
+
 app.use(methodOverride("_method"));
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
