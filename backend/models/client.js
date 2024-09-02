@@ -33,16 +33,17 @@ const clientSchema = new mongoose.Schema({
     default: new Date().getTime(),
   },
   fullname: {
-    type : String,
-    default : "Client"
+    type: String,
+    default: "Client",
   },
-  description : {
-    type : String,
-    default : "Description Description Description Description Description Description Description"
+  description: {
+    type: String,
+    default:
+      "Description Description Description Description Description Description Description",
   },
-  chatFreelancer:{ 
-    type: [String]
-  }
+  chatFreelancer: {
+    type: [String],
+  },
 });
 
 const client = mongoose.model("Client", clientSchema);
