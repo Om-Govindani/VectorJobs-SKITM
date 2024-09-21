@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import RatingForm from "./RatingForm";
+import axiosInstance from "../../utils/axiosInstance";
 //const sendEmail = require('../services/mailer'); // Adjust path as necessary
 // import sendEmail from "../../../../backEnd/services/mailer";
 
@@ -17,6 +18,19 @@ const LeaderTable = ({ selectedFilter, selectedOption, onDropdownChange }) => {
   //       console.log(res);
   //     })
   // }
+
+  const handleApproachClick = async (email) => {
+    try {
+      const emailSubject = `Invitation to collaborate`;
+      const emailText = `Dear Freelancer, \n\nWe are interested in collaborating with you on a project. Please let us know if you are available to discuss this opportunity further.\n\nBest regards,\nVector Jobs`;
+
+      await axiosInstance.post('/client/send-email', { to: email, subject: emailSubject, text: emailText });
+      alert("Email sent successfully!");
+    } catch (error) {
+      console.error("Error sending email:", error); 
+      alert("Failed to send email.");
+    }
+  };
 
   // Sample data for the table with updated skills
   const tableData = [
@@ -38,8 +52,23 @@ const LeaderTable = ({ selectedFilter, selectedOption, onDropdownChange }) => {
     { id: 15, name: "Amelia Wright", skills: "Fullstack Developer", rating: 4.7, ranking: 15, completionRating: 4.6 },
   ];
 
+  const fetchFreelancers = async () => {
+    try {
+      const response = await axiosInstance.get("/freelancer/all");
+      setSortedData(response.data);
+      console.log(response.data);
+    } catch (error) {
+      console.error('Error fetching freelancers:', error);
+    }
+  };
+
   useEffect(() => {
-    let filteredData = [...tableData];
+    fetchFreelancers();
+  }, []);
+
+
+  useEffect(() => {
+    let filteredData = [...sortedData];
     
     // Apply skill filter based on selected options
     if (selectedOption.length > 0) {
@@ -49,13 +78,13 @@ const LeaderTable = ({ selectedFilter, selectedOption, onDropdownChange }) => {
     // Apply dropdown filter
     switch (selectedFilter) {
       case 'average-rating':
-        filteredData.sort((a, b) => b.rating - a.rating);
+        filteredData.sort((a, b) => b.overallRating - a.overallRating);
         break;
       case 'average-ranking':
-        filteredData.sort((a, b) => a.ranking - b.ranking);
+        filteredData.sort((a, b) => a.numberOfRatings - b.numberOfRatings);
         break;
       case 'average-completion-time':
-        filteredData.sort((a, b) => b.completionRating - a.completionRating);
+        filteredData.sort((a, b) => b.CompletionRatings - a.CompletionRatings);
         break;
       default:
         break;
@@ -67,6 +96,7 @@ const LeaderTable = ({ selectedFilter, selectedOption, onDropdownChange }) => {
   const handleButtonClick = () => {
     setButton(!button);
   };
+  let items =0;
 
   return (
     <div className="h-full p-6 max-w-6xl mx-auto bg-white rounded-lg shadow-lg">
@@ -82,14 +112,14 @@ const LeaderTable = ({ selectedFilter, selectedOption, onDropdownChange }) => {
           <option value="average-completion-time">Average Completion Time</option>
         </select>
         
-        <button
+        {/* <button
           onClick={handleButtonClick}
           className={`px-5 py-2.5 text-sm font-medium rounded-lg transition ${
             button ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-800'
           } hover:bg-blue-700 focus:ring-2 focus:ring-blue-400`}
         >
           {button ? 'Hide Rating Form' : 'Show Rating Form'}
-        </button>
+        </button> */}
       </div>
 
       {button && <RatingForm />}
@@ -107,14 +137,14 @@ const LeaderTable = ({ selectedFilter, selectedOption, onDropdownChange }) => {
           <tbody>
             {sortedData.map((item) => (
               <tr key={item.id} className="bg-white text-black hover:bg-blue-50 transition">
-                <td className="px-6 py-4 border-b border-blue-100 text-sm">{item.id}</td>
-                <td className="px-6 py-4 border-b border-blue-100 text-sm">{item.name}</td>
+                <td className="px-6 py-4 border-b border-blue-100 text-sm">{items+(items+1)}</td>
+                <td className="px-6 py-4 border-b border-blue-100 text-sm">{item.username}</td>
                 <td className="px-6 py-4 border-b border-blue-100 text-sm">{item.skills}</td>
-                <td className="px-6 py-4 border-b border-blue-100 text-sm">{item.rating}</td>
+                <td className="px-6 py-4 border-b border-blue-100 text-sm">{item.overallRating}</td>
                 <td className="px-6 py-4 border-b border-blue-100 text-center text-sm">
                   <button 
                     
-                    onClick={() => alert(`Applied for user with ID: ${item.id}`)}
+                    onClick={handleApproachClick}
                     className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition"
                   >
                     Approach

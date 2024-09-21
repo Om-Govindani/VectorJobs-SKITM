@@ -23,7 +23,7 @@ const RatingForm = ({ applicantId, jobId, onClose, close }) => {
         }
       } catch (error) {
         console.error('Error fetching job data:', error);
-        setError('Failed to fetch job data.');
+       // setError('Failed to fetch job data.');
       }
     };
 
@@ -96,7 +96,7 @@ const RatingForm = ({ applicantId, jobId, onClose, close }) => {
         </div>
 
         {/* Error Message */}
-        {error && <p className="text-red-500">{error}</p>}
+        {/* {error && <p className="text-red-500">{error}</p>} */}
 
         <button
           type="submit"

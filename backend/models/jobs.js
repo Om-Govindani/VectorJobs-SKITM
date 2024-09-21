@@ -24,7 +24,6 @@ const jobSchema = new mongoose.Schema({
   },
   jobDescription: {
     type: String,
-    minlength: 100,
   },
   deadline: {
     type: String,

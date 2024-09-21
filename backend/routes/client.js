@@ -7,6 +7,7 @@ const client = require("../models/client");
 const jwt = require("jsonwebtoken");
 const { authenticateToken } = require("../utilities");
 const jobs = require("../models/jobs");
+const sendEmail = require("../services/mailer");
 
 
 const EventEmitter = require('events');
@@ -94,6 +95,19 @@ router.post("/login", async (req, res) => {
     console.log(err);
   }
 });
+
+router.post('/send-email', async (req, res) => {
+  const { to, subject, text } = req.body;
+
+  try {
+    await sendEmail(to, subject, text);
+    res.status(200).send({ message: 'Email sent successfully!' });
+  } catch (error) {
+    console.error('Error sending email:', error);
+    res.status(500).send({ message: 'Failed to send email.' });
+  }
+});
+
 
 router.get("/getUser", authenticateToken, async (req, res) => {
   const { user }   = req.user;

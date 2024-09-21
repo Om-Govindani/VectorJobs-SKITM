@@ -116,6 +116,15 @@ router.post("/getByIds", async (req, res) => {
   }
 });
 
+router.get('/all', async (req, res) => {
+  try {
+    const Freelancers = await freelancer.find(); // Fetch all freelancers
+    res.json(Freelancers);
+  } catch (error) {
+    console.error('Error fetching freelancers:', error);
+    res.status(500).json({ msg: "Server error" });
+  }
+});
 // router.post("/rate", async (req, res) => {
 //   try {
 //     const { applicantId, jobId, completionTimeRating, overallRating } =
@@ -229,7 +238,7 @@ router.post("/updateChatClients", authenticateToken, async (req, res) => {
 });
 
 router.post("/rate", async (req, res) => {
-  const { applicantId, jobId, completionTimeRating, overallRating } = req.body;
+  const { applicantId, jobId, CompletionRatings, overallRating } = req.body;
   console.log(req);
   try {
     const freelancerDoc = await freelancer.findById(applicantId);
@@ -240,19 +249,41 @@ router.post("/rate", async (req, res) => {
     const job = await jobs.findById(jobId);
     if (!job) {
       return res.status(404).json({ message: "Job not found" });
+
+      const numberOfRatings = freelancerDoc.numberOfRatings  || 0;
+    const currentAverageCompletionTime = freelancerDoc.CompletionRatings ||  0;
+    const currentAverageOverallRating = freelancerDoc.overallRating || 0;
+
+    // Increment the total number of ratings
+    const newNumberOfRatings = numberOfRatings + 1;
+
+    // Calculate the new average completion time rating
+    const updatedAverageCompletionTime = 
+      (currentAverageCompletionTime + CompletionRatings) / newTotalRatings;
+
+    // Calculate the new average overall rating
+    const updatedAverageOverallRating = 
+      (currentAverageOverallRating + overallRating) / newTotalRatings;
+
+    // Update the freelancer document with the new averages and total ratings
+    freelancerDoc.numberOfRatings = newNumberOfRatings;
+    freelancerDoc.CompletionRatings = updatedAverageCompletionTime;
+    freelancerDoc.overallRating = updatedAverageOverallRating
     }
 
-    const totalRatings = freelancerDoc.totalRatings || 0;
-    const numberOfRatings = freelancerDoc.numberOfRatings || 0;
+  //   const totalRatings = freelancerDoc.overallRating || 0;
+  //   const numberOfRatings = freelancerDoc.numberOfRatings || 0;
+  //   const completionRatings = freelancerDoc.CompletionRatings;
 
-    const newTotalRatings = totalRatings + completionTimeRating + overallRating;
-    const newNumberOfRatings = numberOfRatings + 2; // Two ratings
+  //   //const newTotalRatings = totalRatings + completionTimeRating + overallRating;
+  //   //const newNumberOfRatings = numberOfRatings + 1; // Two ratings
 
-    const newAverageRating = newTotalRatings / newNumberOfRatings;
+  //  // const newAverageRating = newTotalRatings / newNumberOfRatings;
+  //  const newTotalRatings = totalRatings 
 
-    freelancerDoc.overallRating = newAverageRating;
-    freelancerDoc.CompletionRatings = newTotalRatings;
-    freelancerDoc.numberOfRatings = newNumberOfRatings;
+  //   freelancerDoc.overallRating = newAverageRating;
+  //   freelancerDoc.CompletionRatings = newTotalRatings;
+  //   freelancerDoc.numberOfRatings = newNumberOfRatings;
 
     await freelancerDoc.save();
 

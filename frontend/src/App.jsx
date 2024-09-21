@@ -19,7 +19,7 @@ const routes = (
     <Route path="/profileClient" exact element={<ProfileClient />} />
     <Route path="/freelancer" exact element={<FreelancerPage />} />
     <Route path="/client/leaderboard" exact element={<LeaderBoard />} />
-    <Route path="/Chat" exact element={<ClientChat/>}/>
+    <Route path="/Chat" exact element={<ClientChat />}/>
     </Routes>
   </Router>
 )
