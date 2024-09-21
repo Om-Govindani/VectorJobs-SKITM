@@ -2,10 +2,6 @@
     "version": 2,
     "name": "VectorJobs",
     "framework": "react",
-    "build": {
-      "command": "npm run build",
-      "output": "dist"
-    },
     "routes": [
       {
         "src": "/(.*)",
