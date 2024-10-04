@@ -23,7 +23,7 @@ app.use(
     origin: "*",
   })
 );
-app.listen(8080, () => {
+app.listen(8000, () => {
   console.log("Server is listeing on port 8080");
 });
 
