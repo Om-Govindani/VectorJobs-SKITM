@@ -18,11 +18,7 @@ app.use(methodOverride("_method"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.use(
-  cors({
-    origin: "*",
-  })
-);
+app.use(cors());
 app.listen(8000, () => {
   console.log("Server is listeing on port 8080");
 });
