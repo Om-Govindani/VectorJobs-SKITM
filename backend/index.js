@@ -10,13 +10,19 @@ const free = require("./routes/freelancer.js");
 const cli = require("./routes/client.js");
 const job = require("./routes/jobs.js");
 
-const corsOptions = {
-  origin: "https://vectorjobs.vercel.app",
-  methods: ["GET", "POST", "PUT", "DELETE"],
-  allowedHeaders: ["Content-Type", "Authorization"],
-};
+// const corsOptions = {
+//   origin: "https://vectorjobs.vercel.app",
+//   methods: ["GET", "POST", "PUT", "DELETE"],
+//   allowedHeaders: ["Content-Type", "Authorization"],
+// };
 
-app.use(cors(corsOptions));
+// app.use(cors(corsOptions));
+
+app.use(
+  cors({
+    origin: "*",
+  })
+);
 
 const EventEmitter = require("events");
 const appEventEmitter = new EventEmitter();
@@ -26,7 +32,7 @@ app.use(methodOverride("_method"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.listen(8000, () => {
+app.listen(8080, () => {
   console.log("Server is listeing on port 8080");
 });
 
