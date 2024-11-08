@@ -32,7 +32,9 @@ appEventEmitter.setMaxListeners(20); // Increase the limit to 20
 app.use(methodOverride("_method"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
+app.get("/",(req,res)=>{
+  res.json("welcome to vectorjobs ... this is the Backend")
+})
 app.listen(8080, () => {
   console.log("Server is listeing on port 8080");
 });
