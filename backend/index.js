@@ -21,6 +21,7 @@ const job = require("./routes/jobs.js");
 app.use(
   cors({
     origin: "*",
+    methods: ["GET", "POST", "PUT", "DELETE"],
   })
 );
 
